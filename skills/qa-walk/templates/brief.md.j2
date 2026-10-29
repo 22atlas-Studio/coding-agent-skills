@@ -1,0 +1,37 @@
+# QA Walk: {{ app }} - {{ run_ts }}
+
+**Runner:** {{ runner }}
+**Budget:** ${{ "%.2f" % cost_usd }} of ${{ "%.2f" % budget_usd }}
+**Wall-clock:** {{ wall_clock_human }}
+**Workflows tested:** {{ workflows_tested }}{% if workflows_skipped %} ({{ workflows_skipped }} skipped){% endif %}
+
+## Summary
+| Verdict | Count |
+|---|---|
+{% for v, c in counts.items() if c > 0 -%}
+| {{ v }} | {{ c }} |
+{% endfor %}
+
+{% if bugs %}## Bugs (severity-sorted)
+{% for f in bugs %}### BUG-{{ "%03d" % loop.index }} [{{ f.severity }}]: {{ f.summary }}
+- **Workflow:** {{ f.workflow_id }} (`runs/{{ run_ts }}/workflows/{{ f.workflow_id }}/`)
+- **Repro:**
+{% for s in f.repro_steps %}  {{ loop.index }}. {{ s }}
+{% endfor %}{% if f.evidence.network_failures %}- **Network failures:**
+{% for n in f.evidence.network_failures %}  - {{ n.method }} {{ n.url }} -> {{ n.status }}{% if n.body_excerpt %} ({{ n.body_excerpt }}){% endif %}
+{% endfor %}{% endif %}{% if f.evidence.screenshots %}- **Screenshots:** {{ f.evidence.screenshots | join(", ") }}
+{% endif %}{% if f.suggested_regression_check %}- **Suggested regression_check:** "{{ f.suggested_regression_check }}"
+{% endif %}
+{% endfor %}{% endif %}
+{% if blocked %}## Blocked
+{% for f in blocked %}- **{{ f.workflow_id }}** [{{ f.verdict }}]: {{ f.summary }}
+{% endfor %}{% endif %}
+{% if inspect %}## Inspect
+{% for f in inspect %}### INSPECT-{{ "%03d" % loop.index }}: {{ f.summary }}
+- **Workflow:** {{ f.workflow_id }}
+- **Note:** {{ f.notes }}
+{% endfor %}{% endif %}
+## Regression history
+{% if appended_count > 0 %}{{ appended_count }} check(s) appended to workflows.yaml from this run.
+{% else %}No regression checks appended (either no BUG verdicts or `--no-regression-append` was set).
+{% endif %}

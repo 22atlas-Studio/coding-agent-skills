@@ -1,0 +1,4 @@
+interface:
+  display_name: "Wrap"
+  short_description: "Package a session for continuity"
+  default_prompt: "Use $wrap to package this session for continuity."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Pickup"
+  short_description: "Resume a project from verified state"
+  default_prompt: "Use $pickup to rebuild context for this project."

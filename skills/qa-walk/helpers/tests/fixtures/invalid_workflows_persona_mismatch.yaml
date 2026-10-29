@@ -1,0 +1,11 @@
+app: example-app
+last_scaffold: "2026-05-10"
+workflows:
+  - id: ghost-flow
+    name: Flow referencing unknown persona
+    persona: ghost
+    entry_route: /x
+    test_data: {}
+    definition_of_done: "x"
+    do_not_change: "x"
+    regression_checks: []

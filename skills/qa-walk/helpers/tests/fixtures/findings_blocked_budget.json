@@ -1,0 +1,10 @@
+{
+  "workflow_id": "dealer-list-filter",
+  "persona": "dealer",
+  "runner": "codex",
+  "iterations_used": 0,
+  "cost_usd": 0.0,
+  "wall_seconds": 0.0,
+  "verdict": "BLOCKED-BUDGET",
+  "summary": "Skipped: per-run budget cap reached before this workflow began."
+}
