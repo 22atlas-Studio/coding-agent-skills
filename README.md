@@ -1,86 +1,118 @@
 # coding-agent-skills
 
-Sean Weldon's coding agent skill library for Claude Code, Codex, OpenCode, and any agent that reads `~/.agents/skills`.
+**A scrubbed skill library that Claude Code, Codex, and OpenCode can share.**
 
-This repository is the scrubbed pack from his private harness: the guardrail hooks, the six stack gotcha skills, review and QA skills, session handoff skills, reviewer prompts, and the OpenCode agents and commands that belong in that pack. It is not a copy of the whole private library.
+This repository holds the skills, hooks, commands, and reviewer prompts Sean Weldon uses across those harnesses. It is in private review before an open-source release. The tree contains 17 skills, 163 lessons in six stack gotcha skills, 4 hooks, 8 commands, 14 agent prompt files, 3 rules files, and 4 templates.
 
-No license file was in the export for this pack.
+## Status
 
-## Install
+Status for this repository is recorded in this section. There is no `PROJECT.md`.
 
-From a clone of this repo:
+| | |
+|---|---|
+| Lifecycle | Private review before open-source release |
+| Current focus | Confirm the scrubbed pack, the installer, and the hook and skill tests before any public release. |
+
+## What It Does
+
+1. **Install one library into four harnesses** - `install.sh` symlinks every skill into Claude Code, Codex, and the shared skill directory, and symlinks the OpenCode agents and commands into the OpenCode config directory.
+2. **Load the gotchas, reviews, and handoffs** - An agent can read 17 skills, including six stack gotcha skills with 163 lessons, plus the reviewer prompts and the pickup, wrap, and handover commands.
+3. **Catch the git and stop mistakes** - Four hooks refuse dangerous git commands, a piped `git push`, printing a dotenv file, an untiered fan-out, and a stop while lint or tests are failing. Laws 4, 7, and 8 are reminders, not blocks.
+
+## Quick Start
+
+### Prerequisites
+
+- bash
+- git
+- Python 3, for the fan-out hook and the pytest suites
+- shellcheck, for the shell lint listed under Commands
+
+No environment file is required.
+
+### Install
+
+From the repository root:
 
 ```bash
 bash install.sh
 ```
 
-The script symlinks each directory under `skills/` into:
+The script skips a destination that already exists and is not a symlink. It does not copy hooks or a settings file.
 
-- `~/.claude/skills` (Claude Code)
-- `~/.codex/skills` (Codex)
-- `~/.agents/skills` (shared skill directory)
+### Run
 
-It also symlinks each file under `opencode/agents/` and `opencode/commands/` into `~/.config/opencode/agents` and `~/.config/opencode/commands`.
+There is no server to start. After install, Claude Code, Codex, and OpenCode read the linked skills and OpenCode files. To turn on the guards, point the harness at the scripts in `hooks/` using `hooks/README.md`. Do not copy a private settings file, and do not turn on a permissions bypass.
 
-It skips a destination that already exists and is not a symlink. It does not copy hooks or a settings file.
-
-Hook wiring is in `hooks/README.md`. Point the hook commands at this repo, or copy the four scripts into `~/.claude/hooks/`. Do not copy a private settings file, and do not turn on a permissions bypass.
-
-## What is inside
-
-Counts are from this tree.
-
-| Item | Count |
-|---|---|
-| Skills (directories with `SKILL.md`) | 17 |
-| Lessons in the six stack gotcha skills | 163 |
-| Hooks, excluding tests | 4 |
-| Hook test cases | 35 (27 git-safety + 8 law-inject) |
-| Commands | 8 (Claude 5, OpenCode 3) |
-| Agent prompt files | 14 (Claude 9, OpenCode 5) |
-| Rules files | 3 |
-| Templates | 4 |
-| Harnesses linked by `install.sh` | 4 |
-
-Exact commands, run from the repo root:
+Confirm the git-safety hook with:
 
 ```bash
-find skills -mindepth 2 -maxdepth 2 -name SKILL.md | wc -l
-total=0
-for f in skills/react-expo-gotchas/SKILL.md skills/supabase-gotchas/SKILL.md skills/python-backend-gotchas/SKILL.md skills/flutter-dart-gotchas/SKILL.md skills/typescript-gotchas/SKILL.md skills/ai-llm-gotchas/SKILL.md; do
-  n=$(grep -c '^- ' "$f" || true)
-  echo "  $n $f"
-  total=$((total + n))
-done
-echo "  total $total"
-find hooks -maxdepth 1 -type f ! -name README.md | wc -l
-grep -c '^run ' hooks/tests/test-git-push-pipe-guard.sh hooks/tests/test-law-inject.sh
-find commands -maxdepth 1 -name '*.md' | wc -l
-find opencode/commands -maxdepth 1 -name '*.md' | wc -l
-find commands opencode/commands -maxdepth 1 -name '*.md' | wc -l
-find agents -name '*.md' ! -name README.md | wc -l
-find opencode/agents -name '*.md' | wc -l
-find agents opencode/agents -name '*.md' ! -name README.md | wc -l
-find rules -maxdepth 1 -name '*.md' | wc -l
-find . -path './.git' -prune -o -type f -path '*/templates/*' -print | wc -l
-grep -oE '\.claude/skills|\.codex/skills|\.agents/skills|\.config/opencode' install.sh | sort -u | wc -l
+bash hooks/tests/test-git-push-pipe-guard.sh
 ```
 
-Lesson bullets per gotcha skill: react-expo 38, supabase 42, python-backend 27, flutter-dart 13, typescript 13, ai-llm 30.
+## Commands
 
-The four hooks are `pre-tool-git-safety.sh`, `pre-tool-law-inject.sh`, `pre-tool-workflow-budget.sh` (Python, despite the `.sh` name), and `stop-quality-gate.sh`. Laws 4, 7, and 8 are nudges. The law injector does not block on them. The live copies of these four scripts and the git-safety test were compared with this tree. The logic matches. The live files still name a machine path and a private checkout, so the scrubbed copies stay. The test lives in `hooks/tests/` and points at the hook beside that directory.
+| Command | Purpose |
+|---|---|
+| `bash install.sh` | Link skills and OpenCode files into the four harness locations |
+| `bash hooks/tests/test-git-push-pipe-guard.sh` | Run the 27 git-safety hook cases |
+| `bash hooks/tests/test-law-inject.sh` | Run the 8 law-injector cases |
+| `python3 -m pytest skills/security-scan/tests` | Run the security-scan tests |
+| `(cd skills/qa-walk/helpers && python3 -m pytest tests)` | Run the qa-walk helper tests |
+| `shellcheck -x install.sh hooks/pre-tool-git-safety.sh hooks/pre-tool-law-inject.sh hooks/stop-quality-gate.sh hooks/tests/test-git-push-pipe-guard.sh hooks/tests/test-law-inject.sh skills/qa-walk/runners/codex.sh` | Lint the bash scripts |
 
-Claude commands, in `commands/`: `pickup`, `wrap`, `handover`, `retro`, and `recall`. OpenCode commands, in `opencode/commands/`: `pickup`, `wrap`, and `handover`. The blank handover body is `templates/HANDOVER.md`.
+Run each command from the repository root. `pre-tool-workflow-budget.sh` is Python, so it is not in the shellcheck command. There is no typecheck gate, build, or release script in this repository.
 
-Claude agent files under `agents/` are prompt text with no agent frontmatter: `code-reviewer.md`, `security-reviewer.md`, `mobile-code-reviewer.md`, and the six files under `agents/reviewers/`. OpenCode agents under `opencode/agents/` are `planner.md`, `code-reviewer.md`, `security-reviewer.md`, `mobile-code-reviewer.md`, and `secondary-reviewer.md`.
+## Architecture
 
-## Left out of the OpenCode drop
+```text
+agents/        Claude reviewer prompts
+commands/      Claude handoff commands
+hooks/         Guardrail hooks and their tests
+install.sh     Symlink installer
+opencode/      OpenCode agents and commands
+rules/         Standing laws and review rules
+skills/        Skill directories, each with SKILL.md
+templates/     Blank handover template
+```
 
-These files were in the OpenCode directory on the machine and are not in this repo:
+`install.sh` links each directory under `skills/` into `~/.claude/skills`, `~/.codex/skills`, and `~/.agents/skills`. It links each file under `opencode/agents` and `opencode/commands` into `~/.config/opencode/agents` and `~/.config/opencode/commands`. Those are the four harness locations. Hooks stay in this repository until a harness is pointed at them.
 
-- `manager.md`: it loads herdr-graph and herdr-dispatch.
-- `analyst.md`: its handoff is a graph node back to that manager.
-- `builder-coder.md`: a build worker for the private monorepo, and it reports to that manager.
-- `sync-project`, `start-build`, `prototype`: client tracking, the build scheduler, and the sales-prototype workflow.
-- `qa-only`, `promote`, `recall`, `review`, `review-report`, `review-staged`, `review-today`, `watchdog-review`: each one only runs a skill that is not in this library (`qa`, `source-command-retro`, `recall-wiki`, or the review-report family).
-- `ponytail-audit` and `ponytail-review`: five-line command prompts in the ponytail plugin's own tag format (`delete`, `stdlib`, `native`, `yagni`, `shrink`, and "Lean already. Ship."). They are not a Sean skill, and this repo does not vendor that plugin.
+The six gotcha skills are react-expo (38 lessons), supabase (42), python-backend (27), flutter-dart (13), typescript (13), and ai-llm (30). Commands are 5 Claude files in `commands/` and 3 OpenCode files in `opencode/commands/`. Agent prompt files are 9 under `agents/` and 5 under `opencode/agents/`.
+
+A few internal-only prompts were left out of this tree.
+
+## Quality
+
+Run each command in the Commands section separately and inspect its exit code. The hook tests and both pytest suites are the automated gates. shellcheck covers the bash scripts named above.
+
+- Run each configured gate separately and inspect its exit code.
+- Document manual, browser, device, or live-data checks that automation cannot prove.
+- Do not call a change verified unless it was exercised against the required real system or data.
+
+This repository has no web UI. A passing hook test does not prove a live agent session. The manual check is that `bash install.sh` creates the symlinks and that a harness can see the linked skills.
+
+## Security
+
+- Keep secrets out of skills, hooks, commands, and prompts. Nothing in this tree should contain a credential.
+- The law injector blocks `tail`, `cat`, and `head` on a dotenv file. Do not weaken that check. Laws 4, 7, and 8 stay reminders.
+- This library does not authenticate users or store customer data. Do not add tokens, account identifiers, or private paths.
+- Report security concerns through a private GitHub security advisory on this repo.
+
+## Deployment
+
+There is no hosted deployment and no deploy command. Clone this repository onto the machine where the agents run, then run `bash install.sh` from the root.
+
+## Repository Context
+
+The template context files are not in this repository. The rules files that do ship are below.
+
+| File | Purpose |
+|---|---|
+| `rules/ring0-laws.md` | Ten standing laws. Laws 4, 7, and 8 are nudges. |
+| `rules/agents.md` | When to delegate work to a reviewer or subagent. |
+| `rules/security.md` | Ownership checks and untrusted-input rules for review. |
+
+## Contributing
+
+Use a focused branch, preserve unrelated work, and run the commands in the Commands section. Record each exit code in the pull request. Do not describe a change as verified from a reading of the diff alone.
