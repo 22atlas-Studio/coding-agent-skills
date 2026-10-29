@@ -1,0 +1,11 @@
+app: example-app
+last_scaffold: "2026-05-10"
+workflows:
+  - id: dealer-offer-accept
+    name: Dealer accepts customer offer
+    persona: dealer
+    entry_route: /dealer/deals/{deal_id}
+    test_data: { deal_id: from-fixture }
+    definition_of_done: "Dealer accepts offer."
+    do_not_change: "Don't touch other deals."
+    regression_checks: []

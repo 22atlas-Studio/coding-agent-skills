@@ -1,0 +1,19 @@
+app: example-app
+last_scaffold: "2026-05-10"
+workflows:
+  - id: dealer-offer-accept
+    name: First copy
+    persona: dealer
+    entry_route: /a
+    test_data: {}
+    definition_of_done: "x"
+    do_not_change: "x"
+    regression_checks: []
+  - id: dealer-offer-accept
+    name: Second copy with same id
+    persona: dealer
+    entry_route: /b
+    test_data: {}
+    definition_of_done: "x"
+    do_not_change: "x"
+    regression_checks: []

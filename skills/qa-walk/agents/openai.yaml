@@ -1,0 +1,4 @@
+interface:
+  display_name: "QA Walk"
+  short_description: "Run evidence-backed browser workflow QA"
+  default_prompt: "Use $qa-walk to exercise this app workflow."

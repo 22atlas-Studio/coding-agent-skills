@@ -1,0 +1,8 @@
+personas:
+  dealer:
+    email: operator@example.test
+    password_env: QA_DEALER_PASSWORD
+    login:
+      type: smoke_signal
+      route: /login
+      success_marker: "Welcome,"

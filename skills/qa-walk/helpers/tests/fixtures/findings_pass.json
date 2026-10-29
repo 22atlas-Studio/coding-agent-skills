@@ -1,0 +1,11 @@
+{
+  "workflow_id": "dealer-list",
+  "persona": "dealer",
+  "runner": "codex",
+  "iterations_used": 3,
+  "cost_usd": 0.42,
+  "wall_seconds": 38.0,
+  "verdict": "PASS",
+  "summary": "Dealer list renders all deals.",
+  "evidence": {"screenshots": ["screenshots/01_landing.png"]}
+}

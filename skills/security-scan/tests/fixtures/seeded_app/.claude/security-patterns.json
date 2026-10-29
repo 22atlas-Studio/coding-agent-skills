@@ -1,0 +1,39 @@
+{
+  "_comment": "Deterministic per-edit checks for the Anthropic security-guidance plugin. JSON form loads on any Python (no PyYAML needed). Additive to the plugin's built-in patterns. Reminders cap at 1 KB; up to 50 rules loaded.",
+  "patterns": [
+    {
+      "rule_name": "hardcoded_secret_prefix",
+      "substrings": ["sk_live_", "sk-ant-", "AKIA", "ghp_", "xoxb-", "-----BEGIN "],
+      "reminder": "Possible hardcoded credential. Load from edge-function env or EAS server env, never from app source or committed config."
+    },
+    {
+      "rule_name": "service_role_in_client",
+      "regex": "SERVICE_ROLE|service_role",
+      "paths": ["**/app/**"],
+      "exclude_paths": ["**/supabase/functions/**", "**/*.test.*", "**/__tests__/**"],
+      "reminder": "Service-role key or usage in client code. The service-role key bypasses RLS and must never ship in the app bundle. Move this to an edge function."
+    },
+    {
+      "rule_name": "dom_injection_sink",
+      "substrings": ["dangerouslySetInnerHTML", ".innerHTML =", "document.write("],
+      "reminder": "DOM injection sink. Escape or sanitize user-derived content before it reaches this sink; prefer text nodes."
+    },
+    {
+      "rule_name": "raw_auth_users_write",
+      "regex": "(INSERT\\s+INTO|UPDATE)\\s+auth\\.users",
+      "reminder": "Never write auth.users directly. Use GoTrue signup or the admin API."
+    },
+    {
+      "rule_name": "request_controlled_email_recipient",
+      "regex": "[\"']to[\"']\\s*:\\s*(req|body|payload|input|params)\\b",
+      "paths": ["**/supabase/functions/**"],
+      "reminder": "Email or notification recipient taken from the request. Restrict to the authenticated user's own verified address."
+    },
+    {
+      "rule_name": "expo_router_auth_push",
+      "regex": "router\\.push\\(",
+      "paths": ["**/app/(auth)/**"],
+      "reminder": "Auth-flow navigation must use router.replace(), not push(), to prevent back-nav into a half-authenticated state."
+    }
+  ]
+}

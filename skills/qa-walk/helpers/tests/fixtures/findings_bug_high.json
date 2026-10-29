@@ -1,0 +1,23 @@
+{
+  "workflow_id": "customer-make-offer",
+  "persona": "customer",
+  "runner": "codex",
+  "iterations_used": 4,
+  "cost_usd": 0.78,
+  "wall_seconds": 67.0,
+  "verdict": "BUG",
+  "severity": "high",
+  "summary": "Make-offer modal closes without submitting.",
+  "repro_steps": [
+    "Log in as customer",
+    "Open VDP for vehicle 7",
+    "Click Make Offer",
+    "Enter 25000 and click Submit",
+    "Modal closes; no offer appears in dealer queue"
+  ],
+  "suggested_regression_check": "Make Offer submit must produce a visible offer in dealer queue within 2s",
+  "evidence": {
+    "screenshots": ["screenshots/03_modal_open.png", "screenshots/05_after_submit.png"],
+    "network_failures": []
+  }
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Precheck"
+  short_description: "Run delivery-boundary review before push"
+  default_prompt: "Use $precheck to review this delivery before push."
