@@ -45,4 +45,4 @@ bash hooks/tests/test-git-push-pipe-guard.sh
 bash hooks/tests/test-law-inject.sh
 ```
 
-The git-safety script's tests are the original 27 cases. The law-inject script's tests are the eight law cases from the phase-2 harness. The phase-2 harness itself is not shipped: it hardcoded a machine path and also drove hooks that are not in this pack.
+The git-safety script's tests are 27 cases. The law-inject script's tests are eight cases. Only the hooks in this directory are covered.

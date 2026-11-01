@@ -5,7 +5,7 @@ description: Routine internal whole-repo security gate for your apps. Scans one 
 
 # security-scan - internal whole-repo security gate
 
-Replicates a gated harness pattern (map, scan with subagents, triage, report). The stages are in this file. Output shapes are in `CONTRACT.md`. The private fan-out engine is not part of this library.
+Replicates a gated pattern (map, scan with subagents, triage, report). The stages are in this file. Output shapes are in `CONTRACT.md`. There is no separate scanner program in this library.
 
 ## Invocation modes
 
@@ -64,7 +64,7 @@ Interactive: print the verdict line and the findings table from the report to ch
 ## Common mistakes
 | Mistake | Fix |
 |---------|-----|
-| Synthesizing a threat model when the guidance file is missing | STOP and point at the scaffold retrofit (internal-only scope) |
+| Synthesizing a threat model when the guidance file is missing | STOP. Tell the user to add both required files. Do not synthesize a threat model. |
 | Reviewers editing code | Read-only analysis only |
 | Piping Codex output | Direct-redirect `>` only |
 | Emitting BLOCKER/HIGH in latest.json | Use lowercase critical/high/medium/low (the RawFinding severities) |
