@@ -11,13 +11,13 @@ Autonomous E2E QA via a goal-feature pattern: one workflow, one definition of do
 
 - Pre-ship smoke pass before a client handoff or App Store submission
 - After a feature merge that touches multiple flows
-- When Sean says "QA walk <app>" or invokes `/qa-walk <app>`
+- When the user says "QA walk <app>" or invokes `/qa-walk <app>`
 
 ## Args
 
 `/qa-walk <app> [--runner codex|claude] [--budget-usd <cap>] [--workflows <glob>] [--no-regression-append]`
 
-Defaults: `--runner codex`, `--workflows '*'`. Codex is default per cross-model verification (Sean prefers Codex over Claude for verification passes; same-model self-verification is theatrically defective). The spend cap is optional. Do not put a price in the note you write back.
+Defaults: `--runner codex`, `--workflows '*'`. Codex is default per cross-model verification (the operator prefers Codex over Claude for verification passes; same-model self-verification is theatrically defective). The spend cap is optional. Do not put a price in the note you write back.
 
 ## Codex Setup (one-time per host)
 
@@ -131,7 +131,7 @@ git commit -m "qa: regression checks from <run_ts>" -- <qa-dir>
 
 (`runs/<ts>/screenshots/`, `transcript.log`, per-workflow `state.yaml`, and `network.jsonl` are gitignored - only brief.md + findings.json land in git.)
 
-### 7. Report to Sean
+### 7. Report to the user
 
 Print the brief.md content + the path to the run dir + the path to the Obsidian mirror.
 

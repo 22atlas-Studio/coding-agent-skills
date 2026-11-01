@@ -12,10 +12,10 @@ The column shape is the mandatory table later in this skill. Do not copy a route
 ## When to Use
 
 - Pre-QA: before `/qa-walk` runs, so the walk has a coverage matrix instead of vibes
-- Pre-demo: enumerating routes Sean might be asked to demo on a client call
-- Pre-sign-off: forcing a 1-to-1 between SOW features and exercised paths
+- Pre-demo: enumerating routes the operator might be asked to walk through
+- Pre-sign-off: forcing a 1-to-1 between the feature list and exercised paths
 - Pre-handoff: documenting the path surface for a takeover (a contractor or a new owner)
-- When Sean says "give me every path" / "enumerate every flow" / "make a route CSV"
+- When the user says "give me every path" / "enumerate every flow" / "make a route CSV"
 
 ## When NOT to Use
 
@@ -48,7 +48,7 @@ Read for context (in parallel):
 - The auth store / entitlement store / mode store - these define the highest-cardinality axes
 - Any state machine files (XState, custom reducers) - every transition is a row candidate
 
-If the app has neither `PROJECT.md` nor a discoverable route tree, ask Sean to point at the entry surface - do not guess.
+If the app has neither `PROJECT.md` nor a discoverable route tree, ask the user to point at the entry surface - do not guess.
 
 ### 2. Identify Decision Axes
 

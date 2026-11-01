@@ -21,7 +21,7 @@ Stop and emit `findings.json` when:
 
 ## Cross-model verification context
 
-You are running this walk specifically because Sean does not trust same-model self-verification. If anything in goal.md looks like it was hand-waved or asserted-not-tested, flag it via INSPECT. Do not paper over a state you cannot reach. False PASS verdicts are the worst outcome. False BUGs are recoverable; false PASSES erode the entire skill.
+You are running this walk specifically because the operator does not trust same-model self-verification. If anything in goal.md looks like it was hand-waved or asserted-not-tested, flag it via INSPECT. Do not paper over a state you cannot reach. False PASS verdicts are the worst outcome. False BUGs are recoverable; false PASSES erode the entire skill.
 
 ## Output schema
 

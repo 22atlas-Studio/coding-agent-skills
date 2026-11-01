@@ -4,15 +4,15 @@
 
 **One skill library for Claude Code, Codex, and OpenCode.**
 
-Skills, guardrail hooks, handoff commands, and reviewer prompts drawn from real client builds, scrubbed so any coding agent can load them.
-Install once and every harness on the machine reads the same gotchas, review gates, and session handoffs.
+A shared library of skills, guardrail hooks, handoff commands, and reviewer prompts for coding agents.
+A harness here means Claude Code, Codex, or OpenCode. Install once and each harness on the machine reads the same lessons, review gates, and session handoffs.
 
 ![Claude Code](https://img.shields.io/badge/Claude_Code-skills_%2B_hooks-D97757?logo=anthropic&logoColor=white)
 ![Codex](https://img.shields.io/badge/Codex-skills-412991?logo=openai&logoColor=white)
 ![OpenCode](https://img.shields.io/badge/OpenCode-agents_%2B_commands-111111)
 ![Skills](https://img.shields.io/badge/skills-17-2EA44F)
 ![Lessons](https://img.shields.io/badge/gotcha_lessons-163-0969DA)
-![Status](https://img.shields.io/badge/status-private_review-orange)
+![Status](https://img.shields.io/badge/status-ready_to_install-2EA44F)
 
 </div>
 
@@ -31,6 +31,7 @@ Install once and every harness on the machine reads the same gotchas, review gat
 - [Quality and testing](#quality-and-testing)
 - [Security](#security)
 - [Contributing](#contributing)
+- [License](#license)
 
 ## What it does
 
@@ -42,7 +43,7 @@ Install once and every harness on the machine reads the same gotchas, review gat
 
 ## Where it is today
 
-*Status snapshot: October 29, 2026*
+*Status snapshot: November 1, 2026*
 
 | Area | What it covers | Status |
 |------|----------------|--------|
@@ -50,11 +51,11 @@ Install once and every harness on the machine reads the same gotchas, review gat
 | Gotcha lessons | 163 lessons across six stacks | ✅ Shipped in the tree |
 | Hooks | 4 guardrail hooks with 35 test cases | ✅ Tests pass locally |
 | Commands and prompts | 8 commands, 14 agent prompt files, 3 rules files, 4 templates | ✅ Shipped in the tree |
-| Public release | Open-source publication | 🔨 In private review |
+| Public release | Install, use, and license | ✅ Ready to install from this repository |
 
 **Current focus**
 
-- **Release review** - confirm the scrubbed pack, the installer, and the hook and skill tests before any public release.
+- **Install and use** - clone this repository, run `bash install.sh`, and wire the hooks from [`hooks/README.md`](hooks/README.md).
 
 ## How it fits together
 
@@ -224,16 +225,15 @@ shellcheck -x install.sh hooks/pre-tool-git-safety.sh hooks/pre-tool-law-inject.
 | `opencode/` | 5 OpenCode agents and 3 OpenCode commands |
 | `hooks/` | 4 guardrail hooks and their tests |
 | `rules/` | Standing laws, delegation rules, and review security rules |
-| `templates/` | Blank handover template |
+| `templates/` | Blank handover template. The other three templates are under `skills/qa-walk/templates/` |
 | `install.sh` | Symlink installer |
+| `LICENSE` | MIT license |
 
 | Rules file | Purpose |
 |---|---|
 | [`rules/ring0-laws.md`](rules/ring0-laws.md) | Ten standing laws. Laws 4, 7, and 8 are nudges. |
 | [`rules/agents.md`](rules/agents.md) | When to delegate work to a reviewer or subagent. |
 | [`rules/security.md`](rules/security.md) | Ownership checks and untrusted-input rules for review. |
-
-A few internal-only prompts were left out of this tree.
 
 ## Quality and testing
 
@@ -253,6 +253,10 @@ This repository has no web UI. A passing hook test does not prove a live agent s
 ## Contributing
 
 Use a focused branch, preserve unrelated work, and run the commands in the [Commands](#commands) section. Record each exit code in the pull request. Do not describe a change as verified from a reading of the diff alone.
+
+## License
+
+This repository is released under the MIT License. See [LICENSE](LICENSE).
 
 ---
 

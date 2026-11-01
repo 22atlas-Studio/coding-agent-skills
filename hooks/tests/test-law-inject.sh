@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Cases for pre-tool-law-inject.sh, taken from the phase-2 hook harness.
+# Cases for pre-tool-law-inject.sh.
 # Law 3 blocks a tail/cat/head of a dotenv file.
 # Laws 4, 7 and 8 nudge (exit 0, stderr present) on a push to a non-origin remote.
 # Exit 0 = every case matched, 1 = at least one case failed.

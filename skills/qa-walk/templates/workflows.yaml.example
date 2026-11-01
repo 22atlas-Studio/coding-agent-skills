@@ -2,7 +2,7 @@
 #
 # How this file works:
 # - First run scaffolds this from your project's SCOPE.md / TASKS.md / Obsidian docs.
-# - Sean reviews + edits + commits. Future runs use the locked file.
+# - The operator reviews + edits + commits. Future runs use the locked file.
 # - Only `regression_checks` mutates between runs (append-only). Every BUG verdict
 #   adds one line so future runs check for it explicitly.
 #
