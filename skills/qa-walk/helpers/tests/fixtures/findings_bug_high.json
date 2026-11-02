@@ -1,5 +1,5 @@
 {
-  "workflow_id": "customer-make-offer",
+  "workflow_id": "customer-appointment-request",
   "persona": "customer",
   "runner": "codex",
   "iterations_used": 4,
@@ -7,15 +7,15 @@
   "wall_seconds": 67.0,
   "verdict": "BUG",
   "severity": "high",
-  "summary": "Make-offer modal closes without submitting.",
+  "summary": "Request-appointment dialog closes without submitting.",
   "repro_steps": [
     "Log in as customer",
-    "Open VDP for vehicle 7",
-    "Click Make Offer",
-    "Enter 25000 and click Submit",
-    "Modal closes; no offer appears in dealer queue"
+    "Open the services page for service 7",
+    "Click Request Appointment",
+    "Enter Tuesday 10:00 and click Submit",
+    "Dialog closes; no request appears on the schedule"
   ],
-  "suggested_regression_check": "Make Offer submit must produce a visible offer in dealer queue within 2s",
+  "suggested_regression_check": "Request Appointment submit must produce a visible request on the schedule within 2s",
   "evidence": {
     "screenshots": ["screenshots/03_modal_open.png", "screenshots/05_after_submit.png"],
     "network_failures": []

@@ -65,7 +65,7 @@ falsiness.
 **Silent no-op writes.** A privileged write with no affected-row-count assertion reads
 as success when RLS silently dropped it. Require `.select()` plus a length check.
 
-**Generic error catch-alls.** A client string like "Deal not found" or "Something went
+**Generic error catch-alls.** A client string like "Appointment not found" or "Something went
 wrong" is a catch-all for any failed load. Flag code that branches on it as if it were
 literal.
 

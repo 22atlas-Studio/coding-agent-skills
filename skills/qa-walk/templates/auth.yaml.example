@@ -5,9 +5,9 @@
 # yaml that inlines a password.
 
 personas:
-  dealer:
-    email: dealer@test.<app>.local
-    password_env: QA_DEALER_PASSWORD                     # value from .env
+  customer:
+    email: customer@test.<app>.local
+    password_env: QA_CUSTOMER_PASSWORD                   # value from .env
     login:
       type: email_password                               # email_password | magic_link | anonymous_then_upgrade
       route: /login
@@ -16,12 +16,12 @@ personas:
       type: sql                                          # sql | http | none
       # `command` is shell-passthrough - runner must invoke via `subprocess.run(cmd, shell=True)` or `bash -c`,
       # NOT `shlex.split()` or argv list, or the literal `\"` escape sequences will leak through to Postgres.
-      command: docker exec <pg-container> psql -U <user> -d <db> -c "UPDATE \"User\" SET \"isEmailVerified\"=true WHERE email='dealer@test.<app>.local'"
+      command: docker exec <pg-container> psql -U <user> -d <db> -c "UPDATE \"User\" SET \"isEmailVerified\"=true WHERE email='customer@test.<app>.local'"
 
-  customer:
-    email: customer@test.<app>.local
-    password_env: QA_CUSTOMER_PASSWORD
+  staff:
+    email: staff@test.<app>.local
+    password_env: QA_STAFF_PASSWORD
     login:
       type: magic_link
       mailbox_url: http://localhost:54324                # Supabase local Inbucket
-      success_marker: "Browse"
+      success_marker: "Schedule"

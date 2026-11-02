@@ -17,22 +17,22 @@ def _write_workflows(path: Path, workflows: list[dict]):
 def test_bug_appends_one_regression_check(tmp_path):
     wf_path = tmp_path / "workflows.yaml"
     _write_workflows(wf_path, [{
-        "id": "dealer-offer-accept",
-        "name": "X", "persona": "dealer", "entry_route": "/x",
+        "id": "customer-appointment-book",
+        "name": "X", "persona": "customer", "entry_route": "/x",
         "test_data": {}, "definition_of_done": "..", "do_not_change": "..",
         "regression_checks": [],
     }])
 
     finding = {
-        "workflow_id": "dealer-offer-accept",
+        "workflow_id": "customer-appointment-book",
         "verdict": "BUG",
-        "suggested_regression_check": "Accept button POST must succeed when offer is pending",
+        "suggested_regression_check": "Book button POST must succeed when the slot is available",
     }
     appended = append_regression_checks(wf_path, [finding], run_ts="2026-05-10-1430")
     assert appended == 1
     out = _load(wf_path)
     assert out["workflows"][0]["regression_checks"] == [
-        "Accept button POST must succeed when offer is pending (bug from run 2026-05-10-1430)",
+        "Book button POST must succeed when the slot is available (bug from run 2026-05-10-1430)",
     ]
 
 

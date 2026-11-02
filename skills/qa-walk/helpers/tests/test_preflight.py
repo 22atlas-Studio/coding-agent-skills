@@ -19,17 +19,17 @@ def test_missing_auth_yaml_raises_with_template_hint(tmp_qa_dir):
 
 def test_dev_server_must_serve_body_marker(tmp_qa_dir, monkeypatch):
     # auth.yaml + workflows.yaml present and minimal-valid
-    monkeypatch.setenv("QA_DEALER_PASSWORD", "x")
+    monkeypatch.setenv("QA_CUSTOMER_PASSWORD", "x")
     (tmp_qa_dir / "auth.yaml").write_text(
         "personas:\n"
-        "  dealer:\n"
+        "  customer:\n"
         "    email: a@b\n"
-        "    password_env: QA_DEALER_PASSWORD\n"
+        "    password_env: QA_CUSTOMER_PASSWORD\n"
         "    login: { type: email_password, route: /login, success_marker: hi }\n"
     )
     (tmp_qa_dir / "workflows.yaml").write_text(
         "app: x\nworkflows:\n"
-        "  - { id: a, name: A, persona: dealer, entry_route: /, test_data: {}, "
+        "  - { id: a, name: A, persona: customer, entry_route: /, test_data: {}, "
         "definition_of_done: ., do_not_change: ., regression_checks: [] }\n"
     )
 
@@ -45,17 +45,17 @@ def test_dev_server_must_serve_body_marker(tmp_qa_dir, monkeypatch):
 
 
 def test_codex_runner_requires_codex_on_path(tmp_qa_dir, monkeypatch):
-    monkeypatch.setenv("QA_DEALER_PASSWORD", "x")
+    monkeypatch.setenv("QA_CUSTOMER_PASSWORD", "x")
     (tmp_qa_dir / "auth.yaml").write_text(
         "personas:\n"
-        "  dealer:\n"
+        "  customer:\n"
         "    email: a@b\n"
-        "    password_env: QA_DEALER_PASSWORD\n"
+        "    password_env: QA_CUSTOMER_PASSWORD\n"
         "    login: { type: email_password, route: /login, success_marker: hi }\n"
     )
     (tmp_qa_dir / "workflows.yaml").write_text(
         "app: x\nworkflows:\n"
-        "  - { id: a, name: A, persona: dealer, entry_route: /, test_data: {}, "
+        "  - { id: a, name: A, persona: customer, entry_route: /, test_data: {}, "
         "definition_of_done: ., do_not_change: ., regression_checks: [] }\n"
     )
     monkeypatch.setattr("preflight.shutil.which", lambda _: None)

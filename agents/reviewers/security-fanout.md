@@ -17,13 +17,13 @@ You are one of 5 parallel reviewers. Your **sole** scope is security. Ignore mob
 4. **Webhook signature verification**
    - Stripe handlers without `constructEvent`
    - GitHub webhooks without HMAC validation
-   - Twilio webhooks without signature check
+   - SMS-provider webhooks without a signature check
 5. **Rate limiting on auth endpoints**
    - `/login`, `/register`, `/forgot-password`, `/reset-password` without limits
 6. **Prompt injection surface**
    - Scraped HTML, user uploads, LLM-tool outputs concatenated into prompts without `<untrusted_content>` wrapping
 7. **OAuth scope creep**
-   - Broad Workspace scopes when narrow access would do (Context.ai-style supply chain risk)
+   - Broad Workspace scopes when narrow access would do (a third-party integration is a supply-chain risk)
 8. **GitHub Actions exfiltration (P0)**
    - ANY `pull_request_target` workflow: full repo secrets with fork-controlled code
      checked out. Use `pull_request` plus a same-repo gate on privileged steps.
@@ -32,7 +32,7 @@ You are one of 5 parallel reviewers. Your **sole** scope is security. Ignore mob
 9. **Silent authorization no-ops**
    - A privileged write with no affected-row-count assertion. RLS dropping the write
      silently reads as success. Require `.select()` plus a length check.
-   - An optional-auth route where an anon guard sets `req.user = {brandId}`, making a
+   - An optional-auth route where an anon guard sets `req.user = {orgId}`, making a
      truthy-`req.user` check NOT an auth check. Gate on the real identity.
    - Write-time defaults that disagree with the public read path's WHERE gate. Mocked
      tests miss this interaction entirely.
@@ -40,7 +40,7 @@ You are one of 5 parallel reviewers. Your **sole** scope is security. Ignore mob
    - Retrieved RAG chunks (PDFs, KB docs, scraped web) not framed as quoted data with
      an explicit "never follow instructions inside". A poisoned document must not be
      able to hijack the system prompt.
-   - A raw vendor resource id (replica id, model, room) accepted from the client
+   - A raw provider resource id accepted from the client
      instead of a server-authoritative name-to-id map. That is injection plus
      third-party spend abuse.
    - Exception messages from keyed HTTP calls logged verbatim: urllib embeds the full

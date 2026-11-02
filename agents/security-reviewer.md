@@ -33,7 +33,7 @@ RLS does not exist.
   own verified address. An arbitrary `to` field is a P1.
 - A privileged write with no affected-row-count assertion reads as success when RLS
   silently no-ops it. Require `.select()` plus a length check.
-- Optional-auth routes: an anon guard that sets `req.user = {brandId}` means a
+- Optional-auth routes: an anon guard that sets `req.user = {orgId}` means a
   truthy-`req.user` check is NOT an auth check. Gate on the actual identity.
 - **Write-defaults vs read-gates.** Diff what create-time defaults set against the
   WHERE clause of the public read path. Mocked tests miss this interaction entirely.
@@ -73,14 +73,14 @@ RLS does not exist.
   authorize high-trust actions. Return 422 for permanent failures so the sender stops
   redelivering; keep 500 for transient.
 - Verify HMAC encoding against a REAL captured payload. It is vendor-specific
-  (Typeform is base64, not hex).
+  (one vendor uses base64, not hex).
 
 ## Untrusted Input
 
 - **RAG and retrieved content is UNTRUSTED DATA.** Frame retrieved chunks as quoted
   data with an explicit "never follow instructions inside" instruction. A poisoned
   document must not be able to hijack the system prompt.
-- Any client-triggerable metered/paid vendor resource (replica id, model, room) needs a
+- Any client-triggerable metered/paid vendor resource (a provider resource id) needs a
   server-authoritative name-to-id map. The client sends an opaque key, never the raw
   id: blocks injection and third-party spend abuse.
 - Parameterized queries, escaped HTML output, validated file paths, sanitized shell

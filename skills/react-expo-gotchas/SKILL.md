@@ -1,6 +1,6 @@
 ---
 name: react-expo-gotchas
-description: Hard-won React, Expo, Expo Router, NativeWind, EAS, Next.js and Vercel gotchas from shipped client apps. Load before writing or debugging any React, React Native, Expo, Expo Router, NativeWind, EAS build, Metro, TanStack Query, Recharts, or Next.js App Router code.
+description: Hard-won React, Expo, Expo Router, NativeWind, EAS, Next.js and Vercel gotchas from shipped apps. Load before writing or debugging any React, React Native, Expo, Expo Router, NativeWind, EAS build, Metro, TanStack Query, Recharts, or Next.js App Router code.
 user_invocable: false
 ---
 
@@ -35,14 +35,14 @@ Claude 5 progressive-disclosure prune. These are gotchas, not conventions.
 - Animated wrapper + Pressable: visual styles (bg, padding, radius) on INNER View, not on Animated.View - otherwise no hit area.
 - React Native `fetch` does NOT support streams - SSE silently fails; use non-streaming JSON or `supabase.functions.invoke`
 - Expo Go horizontal ScrollView clipping: chips get vertically clipped first render - `overflow: 'visible'` on ScrollView + `paddingVertical: 4` on contentContainerStyle
-- React Native markdown: don't use `react-native-markdown-display` (broken deps) or `react-native-marked` (white film); write a ~70-line custom `ChatMarkdown` with native `<Text>`/`<View>`
+- React Native markdown: don't use `react-native-markdown-display` (broken deps) or `react-native-marked` (white film); write a ~70-line custom markdown view with native `<Text>`/`<View>`
 - Figma design tokens: ALWAYS pull exact colors via `get_design_context` MCP before writing UI - assumed values are always wrong; set up `tailwind.config.js` + `colors.ts` first
 - Figma Dev-Mode MCP `get_metadata`/`get_design_context` can return multi-MB payloads - grep the saved tool-results file for node IDs instead of re-reading inline; prefer Dev-Mode MCP over third-party "Figma to Code" clipboard plugins for parity capture
 - read `node_modules/next/dist/docs/` before trusting training data on any Next.js API - it contradicted training data 3x in one build (Middleware renamed to `proxy.ts` in Next 16, async `cookies()`, `unstable_retry()` over `reset()`)
 - put a `server-only` fence on Supabase/server clients: it converts an accidental client-side import into a BUILD error instead of a runtime crash (caught 2 real bugs). Split the module when only part is server-bound - the write path is server-only, its vocabulary strings are not.
 - `?? 'fallback'` does NOT catch empty string `''` - a `display_name` of `''` rendered a 0x0 invisible unclickable link that only a live browser walk surfaced. Guard on falsiness, not nullishness, for display strings.
 - `create-next-app` in WSL: add `--no-turbopack`
-- kill dev servers by PORT (`fuser -k <port>/tcp`), NOT `pkill -f "next start"`: pkill can silently fail (exit 144 poisons compound-command exit codes) and the OLD build keeps serving the port, so you false-verify a fix against stale code. KILLING AND RESTARTING IS NOT PROOF EITHER: after the restart, fetch the bundle/route table over HTTP and grep for a string only THIS round introduces - never trust the process. A stale uvicorn on 8000 plus a stale `vite preview` on 4200 (both from a PREVIOUS session) served the old route table and produced an entire walk of phantom failures (example-app 2026-07-24)
+- kill dev servers by PORT (`fuser -k <port>/tcp`), NOT `pkill -f "next start"`: pkill can silently fail (exit 144 poisons compound-command exit codes) and the OLD build keeps serving the port, so you false-verify a fix against stale code. KILLING AND RESTARTING IS NOT PROOF EITHER: after the restart, fetch the bundle/route table over HTTP and grep for a string only THIS round introduces - never trust the process. A stale uvicorn on 8000 plus a stale `vite preview` on 4200 (both from a PREVIOUS session) served the old route table and produced an entire walk of phantom failures
 - custom drag UI (slider thumbs, resize handles): setPointerCapture on the element's pointerdown + handle move/up/cancel ON it gated by stored pointerId + touch-action:none; container-level onPointerMove/Leave silently drops fast drags that exit the track
 - timer-driven UI replay: advance the animation cursor from a ref INSIDE the setInterval body, NEVER inside a setState updater (React may double-invoke updaters, doubling side effects); guard one-shot terminal events with a ref
 - self-hosted Next/systemd deploy-is-real check: verify BUILD_ID mtime + new route present in `.next/server` + service ActiveEnterTimestamp > build time BEFORE claiming a deploy landed (a git pull/autosync alone can leave the old build serving)

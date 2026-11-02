@@ -34,12 +34,12 @@ You are one of 5 parallel reviewers. Your **sole** scope is Python pipeline corr
 9. **Fabricated fixtures (P0 - ZERO TOLERANCE)**
    - A test or smoke passing against fixture data authored from assumptions about an
      external wire format. It encodes the bug rather than catching it. Real incident:
-     Typeform answer parsing plus base64 HMAC verified against an invented payload
+     a webhook field parser plus base64 HMAC verified against an invented payload
      shape. Both the tests AND the smoke passed; the shape was wrong.
    - Flag any new fixture for a vendor payload with no traceable provenance (captured
      payload or vendor doc). Provenance belongs in a comment beside the fixture.
-   - Webhook HMAC encoding is vendor-specific (Typeform is base64, not hex; answer
-     values sit on the item, not under `.answer`). Flag verification written against an
+   - Webhook HMAC encoding is vendor-specific (one vendor is base64, not hex; payload
+     fields sit on the item, not under a nested object). Flag verification written against an
      assumed shape.
 10. **Gate integrity (P0)**
    - A test/lint/build command whose exit code is acted on piped through `grep` /
