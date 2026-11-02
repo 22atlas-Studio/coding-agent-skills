@@ -56,13 +56,13 @@ A decision axis is a column where the value materially changes which screens, se
 
 1. **Entry point** - cold_launch, returning_signed_in, push_tap, deep_link, share_link
 2. **Auth state** - signed_out, anonymous_guest, registered, registered_onboarded
-3. **Auth method** - email_register, email_login, sso, password_reset, guest_session, demo_public
-4. **Tier / role / RBAC** - read the entitlement store enum (e.g. `guest | standard | premium | black_label`)
+3. **Auth method** - email_register, email_login, sso, password_reset, guest_session, magic_link
+4. **Tier / role / RBAC** - read the entitlement store enum (e.g. `guest | customer | staff | admin`)
 5. **Theme / palette / locale** - read the ThemeProvider tier→palette resolver if present
 6. **Start surface** - every screen reachable from the root layout
-7. **Per-surface choices** - filters, modes (text/sphere/avatar), categories, payment methods
+7. **Per-surface choices** - filters, visit mode (in_person/video/phone), service category, payment methods
 8. **Outcome axes** - success / abandoned / error / timeout / declined (mirror the actual code branches)
-9. **Terminal state** - BOOKED, MESSAGED, EXITED, ABANDONED, SIGNED_OUT, UPGRADED, ERROR, etc.
+9. **Terminal state** - BOOKED, CONFIRMED, CANCELLED, EXITED, ABANDONED, SIGNED_OUT, ERROR, etc.
 10. **Cross-cutting flags** - happy_path Y/N, coverage_notes (file path + 1-line WHY)
 
 Aim for ~15-30 columns. Fewer is fine for simple apps; more produces noise.
@@ -71,26 +71,26 @@ Aim for ~15-30 columns. Fewer is fine for simple apps; more produces noise.
 
 ### 3. Probabilistic Enumeration
 
-For each flow (AUTH, BOOK, CHAT, etc.):
+For each flow (AUTH, BOOK, APPT, etc.):
 
 1. Start with the **happy path** (most common values for every axis)
 2. Walk each axis and emit one row per **realistic variant**:
-   - 4-tier RBAC → 4 rows for tier-dependent surfaces (but ONLY where tier visibly matters - skip "premium views the about page")
+   - 4-tier RBAC → 4 rows for tier-dependent surfaces (but ONLY where tier visibly matters - skip "staff views the about page")
    - Card vs Apple Pay → 2 rows where iOS gating splits the branch
-   - Trade-in counter loops → 2-3 counter-depth rows (not one row per counter; that's combinatorial explosion)
+   - Reschedule counter loops → 2-3 counter-depth rows (not one row per counter; that's combinatorial explosion)
 3. Add **sad paths**: error states, abandonment points, timeout edges, permission denials, network failures
 4. Add **edge paths**: deep-link variants, offline launch, expired session refresh, cached entitlement
 
 **Filtering rule:** drop rows that violate code invariants. Examples:
 - `auth_state=signed_out` × `tier=premium` is impossible (premium requires auth)
-- `conversation_mode=avatar` × `tier=guest` is impossible (avatar requires entitlement)
+- `visit_mode=video` × `tier=guest` is impossible (a video visit requires a signed-in customer)
 - `payment_method=apple_pay` × `Platform.OS=android` is impossible
 
 If unsure whether a combo is reachable, grep for a guard. No guard → keep the row and call it out in `coverage_notes`.
 
 ### 4. Build the CSV
 
-ALWAYS use `csv.DictWriter` to write the file. Column drift is the #1 failure mode of hand-edited route CSVs (validated on this exact task 2026-05-12 - a hand-written 130-row CSV had 72 broken rows due to inconsistent NA padding).
+ALWAYS use `csv.DictWriter` to write the file. Column drift is the #1 failure mode of hand-edited route CSVs (a hand-written 130-row CSV had 72 broken rows due to inconsistent NA padding).
 
 Pattern (drop into a `/tmp/build_route_csv.py` and run):
 
@@ -116,7 +116,7 @@ with open(out, 'w', newline='') as f:
     [w.writerow(r) for r in ROWS]
 ```
 
-Naming: `route_id` is `<FLOW>-<NNN>` zero-padded to 3 digits (BOOK-001, CHAT-014). Keep flow prefixes 3-5 chars.
+Naming: `route_id` is `<FLOW>-<NNN>` zero-padded to 3 digits (BOOK-001, APPT-014). Keep flow prefixes 3-5 chars.
 
 ### 5. Validate
 
@@ -165,10 +165,10 @@ Every route-walk CSV must include these baseline columns (rename to fit app voca
 | Column | Purpose |
 |--------|---------|
 | `route_id` | `<FLOW>-<NNN>` stable identifier; never reused even after deletion |
-| `flow` | Top-level category (AUTH, BOOK, CHAT, …) - 3-5 char prefix |
+| `flow` | Top-level category (AUTH, BOOK, APPT, …) - 3-5 char prefix |
 | `entry_point` | How the user arrives at the start surface |
 | `auth_state` | signed_out / anonymous_guest / registered / registered_onboarded |
-| `terminal_state` | What state the row ends in (SOLD, BOOKED, EXITED, ABANDONED, ERROR, …) |
+| `terminal_state` | What state the row ends in (BOOKED, CONFIRMED, CANCELLED, EXITED, ABANDONED, ERROR, …) |
 | `happy_path` | Y/N - does this row represent the intended success path |
 | `coverage_notes` | One-line WHY + ideally a `file:line` citation |
 

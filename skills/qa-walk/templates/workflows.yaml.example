@@ -17,7 +17,7 @@ workflows:
     persona: customer                                    # required, must match an entry in auth.yaml
     entry_route: /appointments/book/{slot_id}            # required, supports {placeholder}
     test_data:
-      slot_id: from-fixture                              # placeholder values resolved from fixtures (see qa/fixtures.yaml; deferred to Task 18)
+      slot_id: from-fixture                              # placeholder values resolved from qa/fixtures.yaml
     definition_of_done: |
       Customer sees an open time slot on the booking page, clicks Book,
       appointment status flips from AVAILABLE to BOOKED, the badge updates

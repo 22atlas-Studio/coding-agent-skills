@@ -102,7 +102,7 @@ verified.
 - [ ] Top-level `import * as SecureStore from 'expo-secure-store'` without platform guard - crashes on web. Use `Platform.OS === 'web'` check with lazy `require()`
 - [ ] `useFonts()` not called in root `_layout.tsx` for custom fonts - fonts silently fall back to system defaults even when the package is installed
 - [ ] Missing `SplashScreen.preventAutoHideAsync()` + null-guard when using custom fonts - app flashes unstyled text
-- [ ] `react-native-markdown-display` or `react-native-marked` imported - broken deps / white film rendering issues. Write custom inline `ChatMarkdown` using native `<Text>`/`<View>`
+- [ ] `react-native-markdown-display` or `react-native-marked` imported - broken deps / white film rendering issues. Write a small custom markdown view using native `<Text>`/`<View>`
 
 #### NativeWind Configuration
 

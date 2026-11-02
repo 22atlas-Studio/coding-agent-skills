@@ -63,7 +63,7 @@ def preflight(
                 "runner=codex but `codex` not on PATH. Install Codex CLI or run with --runner claude."
             )
         # Codex ships with NO MCPs by default - Playwright must be wired or the agent has no browser.
-        # Validated 2026-05-12 example-app tracer: missing playwright MCP caused 126K wasted tokens
+        # Validated on a local walk: missing playwright MCP caused 126K wasted tokens
         # before the agent realized it couldn't browse.
         import subprocess
         try:

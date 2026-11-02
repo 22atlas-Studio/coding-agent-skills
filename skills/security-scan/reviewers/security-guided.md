@@ -16,7 +16,7 @@ EXPO_PUBLIC exposure), not generic CWE.
 1. Secrets in code or commits (sk-*, AIza*, JWTs, Supabase service-role keys, STRIPE_* secret keys; .env/*.pem/service-account*.json not gitignored; service-role keys in NEXT_PUBLIC_/VITE_/EXPO_PUBLIC_).
 2. IDOR / RLS bypass: service-role client without explicit user_id/tenant filter; entity-id endpoints that do not verify ownership before read/write.
 3. CORS misconfiguration: allow_origins ["*"] with credentials; error paths missing CORS headers.
-4. Webhook signature verification (Stripe constructEvent, GitHub/Twilio HMAC).
+4. Webhook signature verification (Stripe constructEvent, GitHub HMAC, SMS-provider HMAC).
 5. Rate limiting on auth endpoints (login, register, forgot-password, reset-password).
 6. Prompt-injection surface: scraped HTML / user uploads / LLM tool output concatenated into prompts without <untrusted_content> wrapping.
 7. OAuth scope creep (broad Workspace scopes where narrow would do).

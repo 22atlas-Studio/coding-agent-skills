@@ -2,7 +2,7 @@
 """Convert a route-walk CSV to a qa-walk workflows.yaml skeleton.
 
 Usage:
-    python3 csv_to_workflows.py <csv-path> <app-slug> [--exclude-tavus] [--persona-map <json>]
+    python3 csv_to_workflows.py <csv-path> <app-slug> [--exclude-preview] [--persona-map <json>]
 
 The output is a YAML skeleton. Definitions of done and route entries need
 human editing afterward  -  this script gives the bones, not the meat.
@@ -15,10 +15,10 @@ CSV row -> workflow entry mapping:
     coverage_notes -> definition_of_done seed
     coverage_notes -> do_not_change (empty by default; reviewer adds)
 
-Rows skipped when --exclude-tavus:
-    conversation_mode == avatar
-    start_surface in {demo, chat_mirror}
-    auth_method == demo_public
+Rows skipped when --exclude-preview:
+    visit_mode == preview
+    start_surface in {demo, sandbox}
+    auth_method == preview
 """
 from __future__ import annotations
 
@@ -32,19 +32,19 @@ from pathlib import Path
 DEFAULT_PERSONA_MAP = {
     ("signed_out", "guest"): "guest",
     ("anonymous_guest", "guest"): "guest",
-    ("registered_onboarded", "standard"): "standard",
-    ("registered_onboarded", "premium"): "premium",
-    ("registered_onboarded", "black_label"): "black_label",
-    ("registered", "standard"): "standard",
+    ("registered_onboarded", "customer"): "customer",
+    ("registered_onboarded", "staff"): "staff",
+    ("registered_onboarded", "admin"): "admin",
+    ("registered", "customer"): "customer",
 }
 
 
-def is_tavus_row(row: dict[str, str]) -> bool:
-    if row.get("conversation_mode") == "avatar":
+def is_preview_row(row: dict[str, str]) -> bool:
+    if row.get("visit_mode") == "preview":
         return True
-    if row.get("start_surface") in ("demo", "chat_mirror"):
+    if row.get("start_surface") in ("demo", "sandbox"):
         return True
-    if row.get("auth_method") == "demo_public":
+    if row.get("auth_method") == "preview":
         return True
     return False
 
@@ -61,20 +61,19 @@ def synth_route(row: dict[str, str]) -> str:
     aliases = {
         "welcome": "/",
         "home": "/",
-        "upgrading": "/upgrading",
-        "demo": "/demo",
-        "chat": "/chat",
-        "chat_list": "/chat",
-        "chat_mirror": "/chat/mirror",
-        "venue": "/venue",
-        "discover": "/discover",
-        "trips": "/trips",
-        "squad": "/squad",
+        "login": "/login",
+        "services": "/services",
+        "service_detail": "/services",
+        "book": "/appointments/book",
+        "appointments": "/appointments",
+        "appointment_detail": "/appointments",
+        "availability": "/availability",
+        "staff_schedule": "/staff/schedule",
         "profile": "/profile",
-        "booking": "/booking",
-        "bookings_detail": "/bookings",
-        "itinerary": "/itinerary",
         "notifications": "/notifications",
+        "confirm": "/appointments/confirm",
+        "demo": "/demo",
+        "sandbox": "/sandbox",
     }
     return aliases.get(surface, f"/{surface}")
 
@@ -83,7 +82,7 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("csv_path")
     ap.add_argument("app_slug")
-    ap.add_argument("--exclude-tavus", action="store_true")
+    ap.add_argument("--exclude-preview", action="store_true")
     ap.add_argument("--persona-map", help="JSON dict overriding default persona mapping")
     args = ap.parse_args()
 
@@ -99,7 +98,7 @@ def main() -> int:
     kept = []
     skipped = []
     for r in rows:
-        if args.exclude_tavus and is_tavus_row(r):
+        if args.exclude_preview and is_preview_row(r):
             skipped.append(r["route_id"])
             continue
         persona = persona_map.get((r.get("auth_state", ""), r.get("tier", "")), "guest")
@@ -123,7 +122,7 @@ def main() -> int:
     import yaml  # local import to avoid cost when --help
 
     print(yaml.safe_dump(out, sort_keys=False, default_flow_style=False, width=120))
-    print(f"# kept={len(kept)} skipped_tavus={len(skipped)}", file=sys.stderr)
+    print(f"# kept={len(kept)} skipped_preview={len(skipped)}", file=sys.stderr)
     return 0
 
 

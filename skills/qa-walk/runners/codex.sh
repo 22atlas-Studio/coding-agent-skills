@@ -9,7 +9,7 @@
 #   1  Codex invocation failed (no findings.json produced)
 #   2  preflight (binary missing, args wrong, playwright MCP missing)
 #
-# Validated invocation (Codex CLI 0.130.0, example app tracer 2026-05-12):
+# Validated invocation (Codex CLI 0.130.0):
 #   - `codex exec` is the non-interactive subcommand (was `codex --no-interactive` in spec; that flag is gone)
 #   - Prompt goes via stdin, NOT --goal
 #   - Do not pass a sandbox bypass. If localhost is blocked, exit and report BLOCKED-DEV-SERVER.
