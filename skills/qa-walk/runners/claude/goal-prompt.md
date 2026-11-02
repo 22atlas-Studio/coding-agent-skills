@@ -36,8 +36,8 @@ You are running this walk specifically because the operator does not trust same-
 
 ## Suggested regression_check phrasing
 
-Phrase as a positive assertion that should hold in future runs. Example for the bug "Accept button POST returned 500":
-- Suggested: "Accept button POST request must succeed when offer is pending"
+Phrase as a positive assertion that should hold in future runs. Example for the bug "Book button POST returned 500":
+- Suggested: "Book button POST request must succeed when the slot is available"
 - Do NOT phrase as "the bug from today" or "reproduce yesterday's issue" - the regression_check lives forever.
 
 ---

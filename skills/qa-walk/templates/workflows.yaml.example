@@ -12,18 +12,18 @@ app: <app-id>           # required, e.g. "example-app"
 last_scaffold: "2026-05-10"   # quote so PyYAML doesn't auto-coerce to datetime.date
 
 workflows:
-  - id: dealer-offer-accept                              # required, kebab-case, unique
-    name: Dealer accepts customer offer                  # required, human readable
-    persona: dealer                                      # required, must match an entry in auth.yaml
-    entry_route: /dealer/deals/{deal_id}                 # required, supports {placeholder}
+  - id: customer-appointment-book                        # required, kebab-case, unique
+    name: Customer books an appointment                  # required, human readable
+    persona: customer                                    # required, must match an entry in auth.yaml
+    entry_route: /appointments/book/{slot_id}            # required, supports {placeholder}
     test_data:
-      deal_id: from-fixture                              # placeholder values resolved from fixtures (see qa/fixtures.yaml; deferred to Task 18)
+      slot_id: from-fixture                              # placeholder values resolved from fixtures (see qa/fixtures.yaml; deferred to Task 18)
     definition_of_done: |
-      Dealer sees incoming customer offer on the deal page, clicks Accept,
-      deal status flips from OFFER_PENDING to ACCEPTED, the badge updates
+      Customer sees an open time slot on the booking page, clicks Book,
+      appointment status flips from AVAILABLE to BOOKED, the badge updates
       without a hard reload, POST /api/notifications fires once, and zero
       console errors appear in the page lifecycle.
     do_not_change: |
-      Don't navigate away from this deal. Don't touch other deals.
-      Don't modify dealer profile settings.
+      Don't navigate away from this slot. Don't touch other appointments.
+      Don't modify account profile settings.
     regression_checks: []                                # append-only; populated by future runs

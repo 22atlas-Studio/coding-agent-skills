@@ -1,6 +1,6 @@
 {
-  "workflow_id": "dealer-list-filter",
-  "persona": "dealer",
+  "workflow_id": "appointment-list-filter",
+  "persona": "customer",
   "runner": "codex",
   "iterations_used": 0,
   "cost_usd": 0.0,

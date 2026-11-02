@@ -56,9 +56,9 @@ def load_fixtures(qa_dir: Path | str | None) -> dict[str, str]:
     """Load qa/fixtures.yaml if present. Returns {} when missing.
 
     The runner-side resolution lets a workflow declare
-    `test_data: { deal_id: from-fixture }` and have it become the real
-    seeded UUID at goal.md render time, without each runner having to
-    re-discover the deal via API/SQL.
+    `test_data: { slot_id: from-fixture }` and have it become the real
+    seeded id at goal.md render time, without each runner having to
+    re-discover the slot via API/SQL.
     """
     if qa_dir is None:
         return {}

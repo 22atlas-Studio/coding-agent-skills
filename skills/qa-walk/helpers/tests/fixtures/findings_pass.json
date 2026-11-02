@@ -1,11 +1,11 @@
 {
-  "workflow_id": "dealer-list",
-  "persona": "dealer",
+  "workflow_id": "appointment-list",
+  "persona": "customer",
   "runner": "codex",
   "iterations_used": 3,
   "cost_usd": 0.42,
   "wall_seconds": 38.0,
   "verdict": "PASS",
-  "summary": "Dealer list renders all deals.",
+  "summary": "Appointment list renders all bookings.",
   "evidence": {"screenshots": ["screenshots/01_landing.png"]}
 }

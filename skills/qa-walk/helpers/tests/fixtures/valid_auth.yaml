@@ -1,7 +1,7 @@
 personas:
-  dealer:
-    email: operator@example.test
-    password_env: QA_DEALER_PASSWORD
+  customer:
+    email: customer@example.test
+    password_env: QA_CUSTOMER_PASSWORD
     login:
       type: email_password
       route: /login

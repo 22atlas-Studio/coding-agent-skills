@@ -1,23 +1,23 @@
-# Goal: Dealer accepts customer offer
+# Goal: Customer books an appointment
 
 ## Context
 - App: example-app
-- Persona: dealer (logged in as operator@example.test)
-- Entry route: /dealer/deals/42
+- Persona: customer (logged in as customer@example.test)
+- Entry route: /appointments/book/42
 
 ## Definition of Done
-Dealer sees incoming customer offer on the deal page, clicks Accept,
-deal status flips from OFFER_PENDING to ACCEPTED, the badge updates
+Customer sees an open time slot on the booking page, clicks Book,
+appointment status flips from AVAILABLE to BOOKED, the badge updates
 without a hard reload, POST /api/notifications fires once, and zero
 console errors appear in the page lifecycle.
 
 ## Regression checks (these have failed before and must not fail now)
-- Accept button is not stuck disabled when offer is pending (bug from run 2026-04-28-1430)
+- Book button is not stuck disabled when the slot is available (bug from run 2026-04-28-1430)
 - Status badge updates without a full page reload (bug from run 2026-05-03-1100)
 
 ## Do not change
-Don't navigate away from this deal. Don't touch other deals.
-Don't modify dealer profile settings.
+Don't navigate away from this slot. Don't touch other appointments.
+Don't modify account profile settings.
 
 ## Response format
 

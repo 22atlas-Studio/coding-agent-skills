@@ -1,22 +1,22 @@
 {
-  "workflow_id": "dealer-offer-accept",
-  "persona": "dealer",
+  "workflow_id": "customer-appointment-book",
+  "persona": "customer",
   "runner": "codex",
   "iterations_used": 5,
   "cost_usd": 1.10,
   "wall_seconds": 92.0,
   "verdict": "BUG",
   "severity": "critical",
-  "summary": "Accept button POST returns 500 - deal stays OFFER_PENDING.",
+  "summary": "Book button POST returns 500 - slot stays AVAILABLE.",
   "repro_steps": [
-    "Log in as operator@example.test",
-    "Navigate to /dealer/deals/42",
-    "Click Accept",
-    "Observe POST /api/deals/42/accept returns 500"
+    "Log in as customer@example.test",
+    "Navigate to /appointments/book/42",
+    "Click Book",
+    "Observe POST /api/appointments/42/book returns 500"
   ],
-  "suggested_regression_check": "Accept button POST request must succeed when offer is pending",
+  "suggested_regression_check": "Book button POST request must succeed when the slot is available",
   "evidence": {
     "screenshots": ["screenshots/04_after_click.png"],
-    "network_failures": [{"method": "POST", "url": "/api/deals/42/accept", "status": 500, "body_excerpt": "SequelizeValidationError"}]
+    "network_failures": [{"method": "POST", "url": "/api/appointments/42/book", "status": 500, "body_excerpt": "SequelizeValidationError"}]
   }
 }
