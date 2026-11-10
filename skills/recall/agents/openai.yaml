@@ -1,4 +1,0 @@
-interface:
-  display_name: "Recall"
-  short_description: "Search project memory and cite evidence"
-  default_prompt: "Use $recall to find prior context for this question."

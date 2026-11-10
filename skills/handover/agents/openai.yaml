@@ -1,4 +1,0 @@
-interface:
-  display_name: "Handover"
-  short_description: "Write a verified session handover"
-  default_prompt: "Use $handover to record the current verified state."

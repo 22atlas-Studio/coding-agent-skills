@@ -16,9 +16,7 @@ Package the session so any later harness can resume it.
 
 ## 2. Persist Durable Learning
 
-Invoke the `diary` skill when available so the live session narrative is retained before distillation. A missing diary skill is best effort and must not block the portable handover.
-
-Invoke the `retro` skill when available. Store only lessons that generalize or prevent a repeated failure. Project-specific decisions belong in the project's existing guidance or `memory/decisions.md`, not a harness-specific memory file. If no retro skill is available, record the omission in the final summary and continue.
+Store only lessons that generalize or prevent a repeated failure. Put each one in the project's existing guidance (`AGENTS.md`, `CLAUDE.md`) or `memory/decisions.md`, not a harness-specific memory file. Check that the lesson is not already written down before adding it. If nothing generalizes, say so in the final summary and continue.
 
 ## 3. Update All Context Files
 
@@ -82,19 +80,16 @@ Read the canonical file back after writing it and confirm its project, timestamp
 
 Then, in each repository step 3 cleared for committing, make one scoped docs commit of the step 3 context-file edits plus the repository session copy written above, on the branch step 3 selected. Stage explicit paths only, and before committing assert `git diff --cached --name-only` equals the intended list exactly. Do not push without the push word. Files outside any repository (harness memory, the handover store) need no commit. Skip the commit when the intended list is empty. After committing, rewrite the canonical handover's Current State and uncommitted-path lines to the post-commit state, add the commit sha, and read it back.
 
-## 5. Sync Recall Surfaces
+## 5. Update Notes (Optional)
 
-- For a client project, invoke `sync-project <slug>` when available. Re-read the canonical Obsidian note or returned tracking state to confirm the update landed. Stop and report if a required client state sync fails.
-- For non-client or mixed work, append from the handover to the appropriate Obsidian project note or daily note when available. This branch is best effort.
-- If the checkout has a memory ingest script, you may run it with `--apply`. Skip it when the script is absent. Direct file pickup remains authoritative.
-
-Never replace a multi-entry Obsidian note with a summary.
+- If the user keeps project notes outside the repository (for example an Obsidian project note or a daily note), append a short entry from the handover. This step is best effort.
+- Never replace a multi-entry note with a summary. Append only.
 
 ## 6. Check Delivery Drift
 
 These checks are read-only and best effort:
 
-- Run `stranded-branches` in the current repository when available. Surface `STRANDED` work, but never merge or delete a branch during wrap.
+- Run `git fetch` and then `git branch --no-merged origin/HEAD` in the current repository. List any branch with commits that never reached the default branch, but never merge or delete a branch during wrap.
 
 ## 7. Do not prune worktrees here
 
@@ -104,6 +99,6 @@ List linked worktrees if that helps the report. Do not bulk-remove them during w
 
 Output one compact line per project:
 
-`wrap complete: project=SLUG handover=PATH repo-copy=PATH_OR_SKIPPED context=CHANGED_FILES_OR_UNCHANGED obsidian=PATH_OR_SKIPPED recall=UPDATED_OR_SKIPPED delivery=SUMMARY worktrees=NOT_PRUNED tests=SUMMARY risks=SUMMARY`
+`wrap complete: project=SLUG handover=PATH repo-copy=PATH_OR_SKIPPED context=CHANGED_FILES_OR_UNCHANGED notes=PATH_OR_SKIPPED delivery=SUMMARY worktrees=NOT_PRUNED tests=SUMMARY risks=SUMMARY`
 
-Then report uncommitted changes and suggest exact scoped commit commands if useful. Apart from the context commit at the end of step 4, never auto-commit; never push, send Slack or email, transition tickets speculatively, or include secrets. A handover write or readback failure fails the wrap; optional recall services do not.
+Then report uncommitted changes and suggest exact scoped commit commands if useful. Apart from the context commit at the end of step 4, never auto-commit; never push, send Slack or email, transition tickets speculatively, or include secrets. A handover write or readback failure fails the wrap; the optional notes step does not.

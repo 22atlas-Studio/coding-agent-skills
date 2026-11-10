@@ -1,4 +1,0 @@
-interface:
-  display_name: "Retro"
-  short_description: "Distill durable lessons from a session"
-  default_prompt: "Use $retro to distill durable lessons from this session."
