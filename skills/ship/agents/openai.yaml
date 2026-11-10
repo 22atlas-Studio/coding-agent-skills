@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ship"
+  short_description: "Push and merge behind gates"
+  default_prompt: "Use $ship to push this branch and open a pull request."

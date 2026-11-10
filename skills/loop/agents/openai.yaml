@@ -1,0 +1,4 @@
+interface:
+  display_name: "Build loop"
+  short_description: "Plan, build, review and ship in slices"
+  default_prompt: "Use $loop to take this from idea to shipped, one slice at a time."

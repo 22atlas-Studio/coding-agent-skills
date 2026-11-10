@@ -1,0 +1,4 @@
+interface:
+  display_name: "Build task"
+  short_description: "Build one slice with tests first"
+  default_prompt: "Use $build-task to build the next pending slice."

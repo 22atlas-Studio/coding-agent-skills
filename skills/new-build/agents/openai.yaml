@@ -1,0 +1,4 @@
+interface:
+  display_name: "New build"
+  short_description: "Turn an idea into a brief and a sliced plan"
+  default_prompt: "Use $new-build to turn this idea into a brief and a plan."

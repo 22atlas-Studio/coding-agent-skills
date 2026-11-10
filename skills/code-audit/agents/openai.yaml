@@ -1,0 +1,4 @@
+interface:
+  display_name: "Code audit"
+  short_description: "Rank what could hurt users before launch"
+  default_prompt: "Use $code-audit to audit this repository before launch."
