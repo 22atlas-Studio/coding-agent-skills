@@ -10,8 +10,8 @@ A harness here means Claude Code, Codex, or OpenCode. Install once and each harn
 ![Claude Code](https://img.shields.io/badge/Claude_Code-skills_%2B_hooks-D97757?logo=anthropic&logoColor=white)
 ![Codex](https://img.shields.io/badge/Codex-skills-412991?logo=openai&logoColor=white)
 ![OpenCode](https://img.shields.io/badge/OpenCode-agents_%2B_commands-111111)
-![Skills](https://img.shields.io/badge/skills-17-2EA44F)
-![Lessons](https://img.shields.io/badge/gotcha_lessons-163-0969DA)
+![Skills](https://img.shields.io/badge/skills-26-2EA44F)
+![Lessons](https://img.shields.io/badge/gotcha_lessons-170-0969DA)
 ![Status](https://img.shields.io/badge/status-ready_to_install-2EA44F)
 
 </div>
@@ -36,21 +36,22 @@ A harness here means Claude Code, Codex, or OpenCode. Install once and each harn
 ## What it does
 
 1. **Install one library into four harness locations** - `install.sh` symlinks every skill into Claude Code, Codex, and the shared skill directory, and symlinks the OpenCode agents and commands into the OpenCode config directory.
-2. **Load the gotchas before writing code** - six stack gotcha skills carry 163 lessons, each one a bug that already cost a real debugging cycle.
-3. **Review before you ship** - precheck, code-review, security-scan, qa-walk, and route-walk turn "it looks done" into a gated verdict.
-4. **Hand work between sessions and agents** - pickup, wrap, handover, recall, and retro keep project state durable across harnesses.
-5. **Catch the expensive mistakes** - four hooks refuse dangerous git commands, a piped `git push`, printing a dotenv file, an untiered agent fan-out, and a stop while lint or tests are failing.
+2. **Load the gotchas before writing code** - seven stack gotcha skills carry 170 lessons, each one a bug that already cost a real debugging cycle.
+3. **Build in small, tested slices** - new-build, build-task, loop, triage, ship, and the rest of the build loop take an idea to a merged pull request one slice at a time, with tests written first and a stop at every push, merge, and deploy.
+4. **Review before you ship** - precheck, code-review, security-scan, qa-walk, and route-walk turn "it looks done" into a gated verdict.
+5. **Hand work between sessions and agents** - pickup and wrap keep project state durable across harnesses.
+6. **Catch the expensive mistakes** - four hooks refuse dangerous git commands, a piped `git push`, printing a dotenv file, an untiered agent fan-out, and a stop while lint or tests are failing.
 
 ## Where it is today
 
-*Status snapshot: November 1, 2026*
+*Status snapshot: November 9, 2026*
 
 | Area | What it covers | Status |
 |------|----------------|--------|
-| Skills | 17 skill directories, each with a `SKILL.md` | ✅ Shipped in the tree |
-| Gotcha lessons | 163 lessons across six stacks | ✅ Shipped in the tree |
+| Skills | 26 skill directories, each with a `SKILL.md` | ✅ Shipped in the tree |
+| Gotcha lessons | 170 lessons across seven stacks | ✅ Shipped in the tree |
 | Hooks | 4 guardrail hooks with 35 test cases | ✅ Tests pass locally |
-| Commands and prompts | 8 commands, 14 agent prompt files, 3 rules files, 4 templates | ✅ Shipped in the tree |
+| Commands and prompts | 4 commands, 14 agent prompt files, 3 rules files, 3 qa-walk templates | ✅ Shipped in the tree |
 | Public release | Install, use, and license | ✅ Ready to install from this repository |
 
 **Current focus**
@@ -95,13 +96,13 @@ Everything is a symlink, so a `git pull` in this repository updates every harnes
 
 ```mermaid
 flowchart LR
-    P["🔎 pickup<br/>rebuild current context"] --> I["🧭 investigate-first<br/>grounded report before code"]
-    I --> B["🛠️ build<br/>load the stack gotchas"]
+    P["🔎 pickup<br/>rebuild current context"] --> I["🧭 investigate-first · new-build<br/>report and plan before code"]
+    I --> B["🛠️ build-task · loop<br/>one tested slice, gotchas loaded"]
     B --> R["✅ precheck · code-review<br/>security-scan · qa-walk"]
-    R --> W["📦 wrap · handover<br/>durable state"]
-    W --> T["🧠 retro<br/>distill lessons"]
-    T -. "next session" .-> P
-    RC["🗂️ recall<br/>prior context"] -.-> I
+    R --> S["🚀 ship<br/>push and merge behind gates"]
+    S --> W["📦 wrap<br/>durable state"]
+    W -. "next session" .-> P
+    TR["🐞 triage<br/>bug to root cause"] -.-> B
 ```
 
 ## Skill catalog
@@ -114,29 +115,41 @@ flowchart LR
 | | `ai-llm-gotchas` | Model selection, model ids, extraction limits, RAG trust boundaries |
 | | `flutter-dart-gotchas` | google-services wiring, flavors, analyze scope, iOS white screens |
 | | `typescript-gotchas` | tsc verification, Vitest, ESM imports, built-but-not-wired props |
+| | `aws-cloudfront-dns-gotchas` | CloudFront certs and aliases, registrar-held domains, DNS cutovers, ECS and Cloud Functions rollouts |
+| **Build loop** | `new-build` | Turn an idea into a one-page brief and a plan of small slices |
+| | `build-task` | Build exactly one slice, tests first, then commit and stop |
+| | `loop` | Run plan, build, review, and ship as one loop, stopping at every go |
+| | `triage` | Take a bug report to a root cause, a failing test, and a fix |
+| | `ship` | Push, open a pull request, and merge only after its own checks |
+| | `code-audit` | Read the whole repo and rank what could hurt users before launch |
+| | `figma-parity` | Compare a built screen with its Figma frame and list the differences |
+| | `build-rules` | The quality rules every build-loop skill follows |
 | **Review and QA** | `precheck` | Before pushing: Codex review of staged, uncommitted, and recent commits |
 | | `code-review` | Pre-ship audit before store submission or handoff |
 | | `security-scan` | Whole-repo security gate against the app's own threat model |
 | | `qa-walk` | Goal-driven end-to-end walk of every user workflow |
 | | `route-walk` | Enumerates every distinct user path into a CSV route map |
 | **Process** | `investigate-first` | Investigate and report before any code generation |
+| | `write-tech-spec` | A code-grounded implementation spec for one ticket |
+| | `git-for-agents` | Worktrees, atomic commits, and push safety when an agent runs git |
+| | `observation-masking` | Keep tool output from filling the context window |
 | **Continuity** | `pickup` | Resume a project from remote-current state |
-| | `wrap` | Package a session into durable project state |
-| | `handover` | Evidence-backed note for the next agent |
-| | `recall` | Search prior context, handovers, and history |
-| | `retro` | Distill lessons and reusable patterns from finished work |
+| | `wrap` | Package a session into durable project state and a handover |
+
+`precheck` and `code-review` run the [Codex CLI](https://github.com/openai/codex) as the reviewer, so install and sign in to Codex before using them. `figma-parity` needs the Figma MCP server.
 
 ### Gotcha lessons by stack
 
 ```mermaid
 pie showData
-    title 163 gotcha lessons
+    title 170 gotcha lessons
     "supabase" : 42
     "react-expo" : 38
     "ai-llm" : 30
     "python-backend" : 27
     "flutter-dart" : 13
     "typescript" : 13
+    "aws-cloudfront-dns" : 7
 ```
 
 ## Guardrail hooks
@@ -219,13 +232,12 @@ shellcheck -x install.sh hooks/pre-tool-git-safety.sh hooks/pre-tool-law-inject.
 
 | Path | What it is |
 |------|------------|
-| `skills/` | 17 skill directories, each with a `SKILL.md` |
+| `skills/` | 26 skill directories, each with a `SKILL.md` |
 | `agents/` | 9 Claude reviewer prompt files, loaded by path ([why no frontmatter](agents/README.md)) |
-| `commands/` | 5 Claude handoff commands: pickup, wrap, handover, recall, retro |
-| `opencode/` | 5 OpenCode agents and 3 OpenCode commands |
+| `commands/` | 2 Claude handoff commands: pickup and wrap |
+| `opencode/` | 5 OpenCode agents and 2 OpenCode commands |
 | `hooks/` | 4 guardrail hooks and their tests |
 | `rules/` | Standing laws, delegation rules, and review security rules |
-| `templates/` | Blank handover template. The other three templates are under `skills/qa-walk/templates/` |
 | `install.sh` | Symlink installer |
 | `LICENSE` | MIT license |
 
@@ -249,6 +261,17 @@ This repository has no web UI. A passing hook test does not prove a live agent s
 - **Dotenv files stay unprinted** - the law injector blocks `tail`, `cat`, and `head` on a dotenv file. Do not weaken that check.
 - **No user data** - this library does not authenticate users or store customer data. Do not add tokens, account identifiers, or private paths.
 - **Reporting** - raise security concerns through a private GitHub security advisory on this repository.
+
+## Skills from other authors
+
+These skills are good and we use them alongside this library. They are not copied here; install them from their authors:
+
+| Skill | Author | Where |
+|---|---|---|
+| `tdd`, `write-a-prd`, `prd-to-plan`, `prd-to-issues`, `triage-issue`, `write-a-skill` | Matt Pocock | [mattpocock/skills](https://github.com/mattpocock/skills) (some have since been renamed or reorganized there) |
+| `baseline-ui` | ibelick | [ibelick/ui-skills](https://github.com/ibelick/ui-skills) |
+| `github-deep-review` | Peter Steinberger | [steipete/agent-scripts](https://github.com/steipete/agent-scripts) |
+| `webapp-testing` | Anthropic | [anthropics/skills](https://github.com/anthropics/skills) |
 
 ## Contributing
 

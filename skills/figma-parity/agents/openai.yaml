@@ -1,0 +1,4 @@
+interface:
+  display_name: "Figma parity"
+  short_description: "Compare a built screen with its Figma frame"
+  default_prompt: "Use $figma-parity to check this screen against the Figma frame."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Build rules"
+  short_description: "Quality rules for the build loop"
+  default_prompt: "Use $build-rules before running any build-loop skill."

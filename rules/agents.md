@@ -52,8 +52,8 @@ Start at 1; only escalate when the simpler pattern demonstrably fails. Sophistic
 
 ## Git Commit Discipline
 - Keep commits atomic: commit only the files you touched and list each path explicitly
-- For tracked files: `git commit -m "<scoped message>" -- path/to/file1 path/to/file2`
-- For brand-new files: `git restore --staged :/ && git add "path/to/file1" "path/to/file2" && git commit -m "<scoped message>" -- path/to/file1 path/to/file2`
+- Stage explicit paths: `git add "path/to/file1" "path/to/file2"`, then confirm `git diff --cached --name-only` lists exactly those paths
+- Commit from the index: `git commit -m "<scoped message>"`. Avoid `git commit -- <paths>`: it bypasses the index and silently skips files git does not track yet
 
 ## Anti-Patterns
 - Don't use swarms for simple Q&A
